@@ -18,7 +18,6 @@ const TodoFetch = () => {
             .then(response => response.json()) //Convertimos la respuesta en un objeto "json".
             .then((data) => { //Objeto "json"
                 setTodos(data.todos); //"setTodos" actualiza "todos" con la "data" obtenida de "json".
-            console.log(data.todos);
             })
             .catch((err) => { //Si surge algún error ".cath()" me avisa.
                 console.error(err);
@@ -79,8 +78,8 @@ const TodoFetch = () => {
                 onChange={(e) => setInputValue(e.target.value)} //Actualiza el estado inputValue con el valor del campo de entrada.
                 onKeyDown={handleKeyDown} // Llama a handleKeyDown cuando se presiona la tecla "Enter" en el campo de entrada.
             />
-            {todos.map((todo, index) => (
-                <div key={index} className="todo-list">
+            {todos.map(todo => (
+                <div key={todo.id} className="todo-list">
                     <p style={{ display: 'inline', marginRight: '10px' }}>{todo.label}</p> {/* Muestra la propiedad label del todo */}
                     <i className="fa-solid fa-trash"
                         onClick={() => handleDelete(todo.id)} //Pasamos el id de cada tarea a "handleDelete"
