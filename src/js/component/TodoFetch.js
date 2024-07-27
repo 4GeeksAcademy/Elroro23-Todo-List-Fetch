@@ -17,18 +17,17 @@ const TodoFetch = () => {
         })
             .then(response => {
                 if (!response.ok) { //ok es una propiedad del objeto response(status) si es false muestra un mensaje.
+                    createTodoList(); //Si la lista de tareas no existe llamamos a la función que la crea.
                     throw new Error("La lista no existe"); //Esta excepción interrumpe el código para evitar que se siga ejecutando.
                 }
-                 return response.json() //Convertimos la respuesta en un objeto "json"
+                return response.json() //Convertimos la respuesta en un objeto "json"
             })
 
             .then((data) => { //Objeto "json"
+                console.log("Datos recibidos:", data);
                 setTodos(data.todos); //"setTodos" actualiza "todos" con la "data" obtenida de "json".
             })
             .catch((err) => {//Si surge algún error ".cath()" me avisa.
-                 if(err.message === "La lista no existe"){ //message es una propiedad de los objetos error.
-                    createTodoList() //Si la lista de tareas no existe llamamos a la función que la crea.
-                 }
                 console.error(err);
             });
     }
@@ -58,33 +57,33 @@ const TodoFetch = () => {
             method: "DELETE",
         })
             .then(response => {
-              if(!response.ok){ //Si response.ok es false muestra el siguiente error y este interrumpe el código.
-                throw new Error("Error deleting todo")
-              }
-              console.log("Todo deleted successfully"); //Mostramos un mensaje para saber que se elimino correctamente.
+                if (!response.ok) { //Si response.ok es false muestra el siguiente error y este interrumpe el código.
+                    throw new Error("Error deleting todo")
+                }
+                console.log("Todo deleted successfully"); //Mostramos un mensaje para saber que se elimino correctamente.
                 getTodos() //Actualizamos la lista sin la tarea que eliminamos. 
             })
             .catch((err) => {
                 console.error(err);
             });
     }
-//Función para crear el todo's
-    function createTodoList(){ 
-        fetch(urlTodos + "users/Elroro23",{ //Solicitamos añadir información al servidor.
+    //Función para crear el todo's
+    function createTodoList() {
+        fetch(urlTodos + "users/Elroro23", { //Solicitamos añadir información al servidor.
             method: "POST",
             body: JSON.stringify([]), //Añadimos un array vacío que va a representar el todo's.
-            headers:{
+            headers: {
                 "content-type": "application/json"
             }
         })
-        .then(response  => response.json()) //Recibimos la respuesta en formato .json.
-        .then(data => {
-            console.log("Create response:" + data); //Data representa el objeto .json que recibimos como respuesta.
-            getTodos(); //Actualizamos la lista con las tareas actuales.
-        })
-        .catch((err) => {
-            console.error(err);
-        })
+            .then(response => response.json()) //Recibimos la respuesta en formato .json.
+            .then(data => {
+                console.log("Create response:" + data); //Data representa el objeto .json que recibimos como respuesta.
+                getTodos(); //Actualizamos la lista con las tareas actuales.
+            })
+            .catch((err) => {
+                console.error(err);
+            })
     }
     const handleKeyDown = (e) => { //Si le damos "Enter" y el campo de texto no está vacío ejecuta "addTodo".
         if (e.key === "Enter" && inputValue.trim() !== "") {
